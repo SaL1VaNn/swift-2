@@ -1,0 +1,96 @@
+//
+//  ContentView.swift
+//  MDlab2
+//
+//  Created by IPZ-31 on 03.10.2024.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var userText:String = ""
+    @State private var isButton = false
+    @State private var isPressed = false
+    
+    var body: some View {
+        ZStack{
+            Color.blue
+                .ignoresSafeArea()
+            VStack(spacing: 20)  {
+                Image("image")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width:150, height: 150)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white, lineWidth: 2))
+                    .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                HStack {
+                        Image("image")
+                            .resizable()
+                            .background(Color.gray)
+                            .frame(width: 30, height: 100)
+                            .rotationEffect(.degrees(180))
+                    Spacer()
+                    VStack{
+                        Text("Denys Mashtak")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        Text("from Dnipro, live in Lviv")
+                            .font(.title2)
+                            .foregroundColor(.black)
+                    }
+                                    
+                                }
+                
+                
+                Text(userText)
+                    .font(.body)
+                    .foregroundColor(.white)
+                    TextField("enter your message", text: $userText)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .padding()
+                Button(action: {
+                    print("PKDFP'KFGZHM")
+                }, label: {
+                    Text("SEND")
+                }).foregroundColor(.white)
+                    .buttonStyle(.bordered)
+                //.tint(.green)
+                    .controlSize(.large)
+                    .background(isPressed ? Color.green : Color.blue) // Change color on press
+                    .cornerRadius(8)
+                    .shadow(radius: 4)
+                    .buttonStyle(CustomDefaultButtonStyle())
+                
+                
+            }
+        }
+    }
+    
+}
+
+#Preview {
+    ContentView()
+}
+
+
+struct CustomDefaultButtonStyle: PrimitiveButtonStyle {
+    @State private var isPressed = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(isPressed ? 0.2 : 1)
+            .animation(.default, value: isPressed)
+            .gesture(DragGesture().onChanged { _ in
+                isPressed = true
+            }.onEnded({ _ in
+                isPressed = false
+                configuration.trigger()
+            }))
+    }
+}
